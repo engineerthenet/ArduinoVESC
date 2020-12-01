@@ -1,6 +1,6 @@
 # ArduinoVESC
 
-This library enables UART communication between a VESC and an Arduino. It uses hardware serial and is designed for use with an Arduino Mega. It has been tested with the latest VESC firmware version.
+This library enables UART communication between a VESC and an Arduino Mega. It uses hardware serial and is designed for use with an Arduino Mega. It has been tested with the latest VESC firmware version.
 
 **Credit**
 
