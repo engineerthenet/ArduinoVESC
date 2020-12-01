@@ -1,13 +1,16 @@
 # ArduinoVESC
+
 This library enables UART communication between a VESC and an Arduino. It uses hardware serial and is designed for use with an Arduino Mega. It has been tested with the latest VESC firmware version.
 
 **Credit**
+
 This library is largely built on the groundwork done by others.
 
 The main UART code was taken from the VESC firmware [vedderb/bldc](https://github.com/vedderb/bldc).
 The Arduino code was taken from SolidGeek's Arduino library [SolidGeek/VescUart](https://github.com/SolidGeek/VescUart).
 
 ## Implementation
+
 There are examples for each use case scenario, including software and hardware serial examples. You will need to initiate the ArduinoVESC class and set the serial port. Then you can call the class for each command.
 
 ```
@@ -41,11 +44,13 @@ void loop() {
 ```
 
 ## Commands
-getData()				Gets the values from the VESC
+
+getData() Gets the values from the VESC
 
 ## Todo
-Read the VESC firmware code and create commands for each function
-Write the code to make this work
+
+Add support for software serial for the VESC so hardware serial can be used for Serial Monitor, this would allow an Uno to be used.
 
 ## License
+
 This library is licensed under The GNU General Public License v3.0.

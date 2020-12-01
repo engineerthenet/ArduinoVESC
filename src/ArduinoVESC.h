@@ -7,6 +7,7 @@
 #define ArduinoVESC_h
 
 #include "Arduino.h"
+#include "datatypes.h"
 
 class ArduinoVESC
 {
@@ -29,7 +30,7 @@ class ArduinoVESC
 		long tachometerAbs;
 		mc_fault_code faultCode;
 		float pidPosNow;
-		app_configuration controllerId;
+		int controllerId;
 		float fet1;
 		float fet2;
 		float fet3;

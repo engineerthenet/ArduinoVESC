@@ -8,6 +8,8 @@
 #include "ArduinoVESC.h"
 #include "HardwareSerial.h"
 #include "SoftwareSerial.h"
+#include "buffer.h"
+#include "crc.h"
 
 #include "ArduinoVESC.h"
 #include <HardwareSerial.h>
@@ -206,20 +208,21 @@ bool ArduinoVESC::processReadPacket(uint8_t * message) {
       data.inpVoltage 		   = buffer_get_float16(message, 10.0, &ind);
       data.ampHours 			   = buffer_get_float32(message, 10000.0, &ind);
       data.ampHoursCharged 	 = buffer_get_float32(message, 10000.0, &ind);
-      data.wattHours         = buffer_get_float32(message, 100.0, &ind);
-      data.wattHoursCharge   = buffer_get_float32(message, 100.0, &ind);
+      data.wattHours         = buffer_get_float32(message, 10000.0, &ind);
+      data.wattHoursCharged   = buffer_get_float32(message, 10000.0, &ind);
       data.tachometer 		   = buffer_get_int32(message, &ind);
       data.tachometerAbs 		 = buffer_get_int32(message, &ind);
-      data.faultCode         = message[&ind];
-      &ind++; // move to the next reading
-      data.pidPosNow         = buffer_get_float32(message, 10000.0, &ind);
-      data.controllerId      = message[&ind];
-      &ind++; // move to the next reading
+      data.faultCode         = message[ind];
+      ind++;
+      data.pidPosNow         = buffer_get_float32(message, 1000000.0, &ind);
+      data.controllerId      = buffer_get_int32(message, &ind);
       data.fet1              = buffer_get_float16(message, 10.0, &ind);
       data.fet2              = buffer_get_float16(message, 10.0, &ind);
       data.fet3              = buffer_get_float16(message, 10.0, &ind);
-      data.avgVd             = buffer_get_float32(message, 100.0, &ind);
-      data.avgVq             = buffer_get_float32(message, 100.0, &ind);
+      //ind++;
+      //ind++;
+      data.avgVd             = buffer_get_float32(message, 1000.0, &ind);
+      data.avgVq             = buffer_get_float32(message, 1000.0, &ind);
       return true;
 
     break;
