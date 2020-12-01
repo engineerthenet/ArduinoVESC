@@ -7,6 +7,7 @@ This library enables UART communication between a VESC and an Arduino. It uses h
 This library is largely built on the groundwork done by others.
 
 The main UART code was taken from the VESC firmware [vedderb/bldc](https://github.com/vedderb/bldc).
+
 The Arduino code was taken from SolidGeek's Arduino library [SolidGeek/VescUart](https://github.com/SolidGeek/VescUart).
 
 ## Implementation
