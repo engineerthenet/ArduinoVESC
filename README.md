@@ -1,6 +1,6 @@
 # ArduinoVESC
 
-This library enables UART communication between a VESC and an Arduino Mega. It uses hardware serial and is designed for use with an Arduino Mega. It has been tested with the latest VESC firmware version.
+This library enables UART communication between a VESC and an Arduino Mega. It has been tested with the latest VESC firmware version. It is based on the work of RollingGecko, SolidGeek and vedderb. It is a more complete library that displays all the data output from the VESC.
 
 **Credit**
 
@@ -51,6 +51,7 @@ getData() Gets the values from the VESC
 ## Todo
 
 Add support for software serial for the VESC so hardware serial can be used for Serial Monitor, this would allow an Uno to be used.
+Add support for the setup values, app and motor configurations to be read from the VESC.
 
 ## License
 
