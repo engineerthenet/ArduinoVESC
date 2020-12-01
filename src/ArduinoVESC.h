@@ -38,6 +38,15 @@ class ArduinoVESC
 		float avgVq;
 
 	};
+	
+	struct firmwareData {
+	int FW_VERSION_MAJOR;
+	String FW_VERSION_MINOR; //in conf_general.h
+	String HW_NAME; // hw_60
+	//64 bit UUID
+	int pairingDone; // check if its paired, this might be bool
+	int FW_TEST_VERSION_NUMBER; // should always be zero
+};
 
 	/** Struct to hold the nunchuck values to send over UART */
 	struct nunchuckPackage {
@@ -56,6 +65,8 @@ class ArduinoVESC
 
 		/** Variabel to hold measurements returned from VESC */
 		dataPackage data; 
+		
+		firmwareData fw_data;
 
 		/** Variabel to hold nunchuck values */
 		nunchuckPackage nunchuck; 
@@ -78,6 +89,10 @@ class ArduinoVESC
 		 * @return     True if successfull otherwise false
 		 */
 		bool getVescValues(void);
+		
+		bool getFirmwareVersion(void);
+		
+		bool getMotorConf(void);
 
 		/**
 		 * @brief      Sends values for joystick and buttons to the nunchuck app

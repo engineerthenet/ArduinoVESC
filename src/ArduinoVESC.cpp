@@ -11,9 +11,6 @@
 #include "buffer.h"
 #include "crc.h"
 
-#include "ArduinoVESC.h"
-#include <HardwareSerial.h>
-
 ArduinoVESC::ArduinoVESC(void){
   nunchuck.valueX         = 127;
   nunchuck.valueY         = 127;
@@ -212,20 +209,35 @@ bool ArduinoVESC::processReadPacket(uint8_t * message) {
       data.wattHoursCharged   = buffer_get_float32(message, 10000.0, &ind);
       data.tachometer 		   = buffer_get_int32(message, &ind);
       data.tachometerAbs 		 = buffer_get_int32(message, &ind);
-      data.faultCode         = message[ind];
+      data.faultCode         = (mc_fault_code)message[ind];
       ind++;
       data.pidPosNow         = buffer_get_float32(message, 1000000.0, &ind);
       data.controllerId      = buffer_get_int32(message, &ind);
       data.fet1              = buffer_get_float16(message, 10.0, &ind);
       data.fet2              = buffer_get_float16(message, 10.0, &ind);
       data.fet3              = buffer_get_float16(message, 10.0, &ind);
-      //ind++;
-      //ind++;
       data.avgVd             = buffer_get_float32(message, 1000.0, &ind);
       data.avgVq             = buffer_get_float32(message, 1000.0, &ind);
       return true;
 
     break;
+    
+    case COMM_FW_VERSION:
+      int lenMes2 = sizeof(message);
+      serialPrint(message, lenMes2);
+      fw_data.FW_VERSION_MAJOR = message[ind]; ind++;
+      fw_data.FW_VERSION_MINOR = (String)message[ind];
+      if(message[ind] < 10) {
+      fw_data.FW_VERSION_MINOR = "0" + fw_data.FW_VERSION_MINOR;
+      }
+      return true;
+    break;
+    
+    case COMM_GET_MCCONF:
+      return true;
+    break;
+      
+      
 
     default:
       return false;
@@ -251,6 +263,46 @@ bool ArduinoVESC::getVescValues(void) {
   {
     return false;
   }
+}
+
+bool ArduinoVESC::getFirmwareVersion(void) {
+
+uint8_t command[1] = { COMM_FW_VERSION };
+uint8_t payload[256];
+
+packSendPayload(command, 1);
+// delay(1); //needed, otherwise data is not read
+
+int lenPayload = receiveUartMessage(payload);
+
+if (lenPayload > 3) {
+  bool read = processReadPacket(payload); //returns true if sucessful
+  return read;
+}
+else
+{
+  return false;
+}
+}
+
+bool ArduinoVESC::getMotorConf(void) {
+
+uint8_t command[1] = { COMM_GET_MCCONF };
+uint8_t payload[256];
+
+packSendPayload(command, 1);
+// delay(1); //needed, otherwise data is not read
+
+int lenPayload = receiveUartMessage(payload);
+
+if (lenPayload > 55) {
+  bool read = processReadPacket(payload); //returns true if sucessful
+  return read;
+}
+else
+{
+  return false;
+}
 }
 
 void ArduinoVESC::setNunchuckValues() {
